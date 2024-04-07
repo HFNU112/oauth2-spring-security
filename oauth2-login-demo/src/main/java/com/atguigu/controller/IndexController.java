@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @date: 2024/4/7 16:26
  */
 @Controller
-public class OAuth2LoginController {
+public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
