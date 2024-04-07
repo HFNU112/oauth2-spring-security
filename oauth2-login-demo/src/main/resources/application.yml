@@ -9,7 +9,7 @@ spring:
         registration:
           github:
             client-id: 6ef17d582ff386565b59  # github授权服务的client_id
-            client-secret: e14809eda726f7c67ceaedd6631e69a5d2432232  # github的client_secret
+            client-secret: 1863e5ca30c3a1c7aca20a06564716c269163fa5  # github的client_secret
 server:
   port: 8002
   servlet:
