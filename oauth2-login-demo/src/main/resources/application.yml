@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: oauth2-login  # 应用名称
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: 6ef17d582ff386565b59  # github授权服务的client_id
+            client-secret: e14809eda726f7c67ceaedd6631e69a5d2432232  # github的client_secret
+server:
+  port: 8002
+  servlet:
+    context-path: /oauth2  # thymeleaf映射相对路径
+logging:
+  level:
+    com.atguigu: debug
