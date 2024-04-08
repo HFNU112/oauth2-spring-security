@@ -3,8 +3,10 @@ spring:
     name: hello-security  # 应用名称
   security:
     user:
-      name: admin  # security用户名
-      password: 123  # security密码
+      name: admin  # 配置的security用户名，默认：user
+      password: password  # 配置security密码，默认：随机生成的字符串，名文配置的密码替换加密格式去配置改动默认登录去解码 留个家庭作业！
+  thymeleaf:
+    cache: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
