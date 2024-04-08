@@ -12,6 +12,10 @@ spring:
             client-secret: 1863e5ca30c3a1c7aca20a06564716c269163fa5  # github的client_secret
 server:
   port: 8002
+  servlet:
+    session:
+      cookie:
+        path: /
 #  servlet:
 #    context-path: /oauth2  # thymeleaf映射相对路径 默认不可以加相对路径，github这个授权服务器的redirect_url=http://ip:port/login/oauth2/code/github
 logging:
