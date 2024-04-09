@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import java.util.Objects;
  * @Date 2024/4/8 23:50
  */
 @Slf4j
+@Component
 public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
 
     @Resource
@@ -31,9 +33,16 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
         return user;  //  return null 出现空指针异常 Cannot invoke "org.springframework.security.core.userdetails.UserDetails.getAuthorities()"
     }
 
+    /**
+     * 添加用户
+     * @param userDetails security用户对象
+     */
     @Override
-    public void createUser(UserDetails user) {
-
+    public void createUser(UserDetails userDetails) {
+        User user = new User();
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
+        userMapper.insert(user);
     }
 
     @Override
