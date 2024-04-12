@@ -1,9 +1,15 @@
 package com.atguigu.config;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author Husp
@@ -46,6 +52,32 @@ public class WebSecurityConfig {
 
         //临时关闭跨站伪造请求
         http.csrf(csrf -> csrf.disable());
+
+        //http验证提交给它的任何身份验证请求的抽象认证处理过滤器
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(new MyAuthenticationEntryPoint())
+                .accessDeniedHandler((request, response, accessDeniedException) -> {  //定义未被授权访问资源
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("code", HttpStatus.UNAUTHORIZED.value());
+                    result.put("message", "当前资源权限未经授权，无法访问~");
+
+                    //将结果集对象转换成json格式的字符串数据
+                    String json = JSON.toJSONString(result);
+
+                    //响应的json的数据返回给前端进行交互处理
+                    response.setContentType("application/json;charset=utf-8");
+                    response.getWriter().println(json);
+
+                })
+        );
+
+        //跨域
+        http.cors(Customizer.withDefaults());
+
+        //会话管理策略
+        http.sessionManagement(session -> session
+                .invalidSessionStrategy(new MyInvalidSessionStrategy())
+        );
 
         return http.build();
     }
