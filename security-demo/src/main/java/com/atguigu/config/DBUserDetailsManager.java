@@ -50,9 +50,16 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
 
     }
 
+    /**
+     * 删除用户
+     * @param username
+     */
     @Override
     public void deleteUser(String username) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username);
 
+        userMapper.delete(wrapper);
     }
 
     @Override

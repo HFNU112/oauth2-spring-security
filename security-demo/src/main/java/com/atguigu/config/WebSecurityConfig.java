@@ -47,6 +47,7 @@ public class WebSecurityConfig {
 
         //http身份注销操作配置
         http.logout(logout -> logout
+                .deleteCookies("JSESSIONID")
                 .logoutSuccessHandler(new MyLogoutSuccessHandler())  // 注销身份
         );
 

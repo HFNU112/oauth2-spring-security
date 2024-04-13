@@ -32,4 +32,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .build();
         dbUserDetailsManager.createUser(userDetails);
     }
+
+    @Override
+    public void deleteUserDetails(String username) {
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(username)
+                .build();
+        dbUserDetailsManager.deleteUser(userDetails.getUsername());
+    }
 }
