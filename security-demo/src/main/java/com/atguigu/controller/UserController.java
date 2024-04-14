@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class UserController {
     private IUserService userService;
 
     @Operation(summary = "查询", description = "查询用户列表")
+    @PreAuthorize("hasRole('ADMIN') and authentication.name == 'admin'")
     @GetMapping("/list")
     public ResultData<List<User>> getList(){
         List<User> userList = userService.list();
@@ -35,6 +37,8 @@ public class UserController {
     }
 
     @Operation(summary = "新增", description = "新增用户")
+//    @PreAuthorize("hasRole('COMMON')")
+    @PreAuthorize("hasAuthority('USER_ADD')")
     @PostMapping("/add")
     public ResultData<String> addUserDetails(@RequestBody @Parameter User user){
         userService.addUserDetails(user);
@@ -42,6 +46,7 @@ public class UserController {
     }
 
     @Operation(summary = "删除", description = "删除用户")
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     @DeleteMapping("/delete/{id}")
     public ResultData<String> deleteUserDetails(@PathVariable(value = "id") Long id){
         userService.deleteUserDetails(id);

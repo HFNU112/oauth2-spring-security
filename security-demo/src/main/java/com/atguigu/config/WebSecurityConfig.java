@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -16,6 +17,8 @@ import java.util.Map;
  * @Date 2024/4/8 0:11
  */
 @Configuration
+//@EnableWebSecurity  //开启自动装配security
+@EnableMethodSecurity  //开启基于方法的所有权限
 public class WebSecurityConfig {
 
     /**
@@ -29,6 +32,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //http授权操作配置
         http.authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers("/user/list").hasAuthority("USER_LIST")  //拥有USER_LIST的权限的用户可以访问/user/list路径
+//                .requestMatchers("/user/add").hasAuthority("USER_ADD")  //拥有USER_ADD的权限的用户可以访问/user/add路径
+//                .requestMatchers("/user/delete/{id}").hasAuthority("USER_DELETE")  //拥有USER_DELETE的权限的用户可以访问/user/delete/{id} 路径
+
+                .requestMatchers("/user/**").hasRole("ADMIN")      //拥有ADMIN角色的用户可以访问/user/**路径
+//                .requestMatchers("/user/list").hasRole("COMMON")  //拥有COMMON角色的用户可以访问/user/list路径
                 .anyRequest()  //认证任何请求
                 .authenticated()  //任何经过身份认证通过后的用户允许访问的URL
         );
