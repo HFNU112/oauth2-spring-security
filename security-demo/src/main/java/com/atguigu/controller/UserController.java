@@ -3,7 +3,6 @@ package com.atguigu.controller;
 import com.atguigu.common.ResultData;
 import com.atguigu.entities.User;
 import com.atguigu.service.IUserService;
-import com.github.xiaoymin.knife4j.annotations.Ignore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,15 +36,22 @@ public class UserController {
 
     @Operation(summary = "新增", description = "新增用户")
     @PostMapping("/add")
-    public void addUserDetails(@RequestBody @Parameter User user){
+    public ResultData<String> addUserDetails(@RequestBody @Parameter User user){
         userService.addUserDetails(user);
+        return ResultData.success("新增成功");
     }
 
     @Operation(summary = "删除", description = "删除用户")
-    @DeleteMapping("/delete")
-    @Ignore
-    public void deleteUserDetails(@RequestParam @Parameter String username){
-        userService.deleteUserDetails(username);
+    @DeleteMapping("/delete/{id}")
+    public ResultData<String> deleteUserDetails(@PathVariable(value = "id") Long id){
+        userService.deleteUserDetails(id);
+        return ResultData.success("删除成功");
     }
 
+    @Operation(summary = "修改", description = "修改用户")
+    @PutMapping("/update")
+    public ResultData<String> updateUserDetails(@RequestBody @Parameter User user){
+        userService.updateUserDetails(user);
+        return ResultData.success("修改成功");
+    }
 }

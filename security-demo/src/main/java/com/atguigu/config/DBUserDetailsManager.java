@@ -46,8 +46,12 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
     }
 
     @Override
-    public void updateUser(UserDetails user) {
+    public void updateUser(UserDetails userDetails) {
+        User user = new User();
+        user.setUsername(userDetails.getUsername());
+        user.setPassword(userDetails.getPassword());
 
+        userMapper.updateById(user);
     }
 
     /**
@@ -58,7 +62,6 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
     public void deleteUser(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username);
-
         userMapper.delete(wrapper);
     }
 

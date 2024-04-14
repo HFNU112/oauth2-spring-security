@@ -9,6 +9,8 @@ import jakarta.annotation.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * <p>
  *  服务实现类
@@ -23,6 +25,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Resource
     private DBUserDetailsManager dbUserDetailsManager;
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public void addUserDetails(User user) {
         UserDetails userDetails = org.springframework.security.core.userdetails.User
@@ -34,10 +39,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public void deleteUserDetails(String username) {
+    public void deleteUserDetails(Long id) {
+        User user = userMapper.selectById(id);
+        if (Objects.isNull(user)) {
+            log.error("数据库中用户不存在~");
+            throw new RuntimeException("数据库中用户不存在~");
+        }
+        String username = user.getUsername();
+        dbUserDetailsManager.deleteUser(username);
+    }
+
+    @Override
+    public void updateUserDetails(User user) {
+        User userVo = userMapper.selectById(user.getId());
+        if (Objects.isNull(userVo)) {
+            log.error("数据库中用户不存在~");
+            throw new RuntimeException("数据库中用户不存在~");
+        }
         UserDetails userDetails = org.springframework.security.core.userdetails.User
-                .withUsername(username)
+                .withDefaultPasswordEncoder()
+                .username(userVo.getUsername())
+                .password(userVo.getPassword())
                 .build();
-        dbUserDetailsManager.deleteUser(userDetails.getUsername());
+        dbUserDetailsManager.updateUser(userDetails);
+
     }
 }

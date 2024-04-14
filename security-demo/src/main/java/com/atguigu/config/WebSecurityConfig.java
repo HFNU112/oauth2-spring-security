@@ -39,11 +39,13 @@ public class WebSecurityConfig {
                         .permitAll()     // 授权自定义表单通过过滤器链
                         .usernameParameter("username")   // 自定义表单的用户名参数值
                         .passwordParameter("password")   //自定义表单的密码参数值
-//                        .failureForwardUrl("/login?error")  // 定义错误返回页面
+//                        .failureForwardUrl("/login?error")  // 定义错误返回页面 默认登录 /login 用户错误返回 /login?error
                         .successHandler(new MyAuthenticationSuccessHandler())  // 身份验证成功事件处理对象
                         .failureHandler(new MyAuthenticationFailureHandler())  //身份验证失败事件处理对象
         );
-//                .httpBasic();    // 允许用户使用 HTTP 基本身份验证请求进行身份验证，没有登出操作
+        //允许用户提供基本 HTTP 身份验证支持请求，没有登出操作
+//        http
+//                .httpBasic(Customizer.withDefaults());
 
         //http身份注销操作配置
         http.logout(logout -> logout

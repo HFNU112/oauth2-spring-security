@@ -15,5 +15,8 @@ public interface IUserService extends IService<User> {
 
     void addUserDetails(User user);
 
-    void deleteUserDetails(String username);
+    void deleteUserDetails(Long id);
+
+    void updateUserDetails(User user);
+
 }
